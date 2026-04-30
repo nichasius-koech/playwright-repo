@@ -13,8 +13,8 @@ class TestLogin:
         login.enter_user_name("InvalidName")
         login.enter_password("SuperSecretPassword!")
         login.tap_login_btn()
-        login.assert_invalid_password()
-        assert not login.is_logged_in(), "User logged in with wrong password !"
+        login.assert_invalid_user_name()
+        assert not login.is_logged_in(), "User logged in with invalid user !"
 
     def test_invalid_password_login(self, login):
         """Test Loging in with invalid password."""
@@ -22,4 +22,4 @@ class TestLogin:
         login.enter_password("WrongPassword")
         login.tap_login_btn()
         login.assert_invalid_password()
-        assert not login.is_logged_in(), "User logged in with wrong password !"
+        assert not login.is_logged_in(), "User logged in with invalid password !"

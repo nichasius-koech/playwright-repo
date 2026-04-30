@@ -40,8 +40,9 @@ class LoginPage(BasePage):
 
     def assert_invalid_user_name(self)-> None:
         """Assert Invalid User name entered."""
-        expect(self.page.locator("#flash")).to_contain_text("Your password is invalid!")
+        expect(self.page.locator("#flash")).to_contain_text("Your username is invalid!")
 
     def assert_invalid_password(self) -> None:
         """Assert Invalid User name entered."""
-        expect(self.page.locator("#flash")).to_contain_text("Your username is invalid!")
+        expect(self.page.locator("#flash")).to_contain_text("Your password is invalid!")
+
