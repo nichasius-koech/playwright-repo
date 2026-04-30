@@ -1,0 +1,44 @@
+# =========================
+# Python
+# =========================
+__pycache__/
+**/__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# =========================
+# Pytest / Test artifacts
+# =========================
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+test-results/
+results/
+reports/
+report.html
+
+# =========================
+# Selenium / Browser artifacts
+# =========================
+screenshots/
+downloads/
+videos/
+*.log
+
+# WebDriver binaries (if checked in locally)
+chromedriver*
+geckodriver*
+msedgedriver*
+
+# =========================
+# IDEs & Editors
