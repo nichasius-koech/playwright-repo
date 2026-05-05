@@ -1,6 +1,3 @@
-import time
-
-
 class TestLogin:
     """Dynamic Table TestSuite."""
     def test_headers(self, dyn_table):

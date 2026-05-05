@@ -13,13 +13,12 @@ class DynamicTable(BasePage):
     def get_table_headers(self) -> List[str]:
         """Return table headers."""
         headers = self.page.locator("table.table.table-striped thead tr th")
-        table_headers: List[str] = headers.all_text_contents()
-        return table_headers
+        return headers.all_text_contents()
 
     def get_table_rows(self)-> list[str] :
         """Get all Table rows."""
-        table_rows = self. page.locator("table.table.table-striped tbody tr").all_text_contents()
-        return table_rows
+        table_rows = self. page.locator("table.table.table-striped tbody tr")
+        return table_rows.all_text_contents()
 
     def get_actual_chrome_cpu_val(self) -> float:
         """Get Actual Chrome value from the Label."""
