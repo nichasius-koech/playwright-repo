@@ -30,7 +30,7 @@ class DynamicTable(BasePage):
         cpu_index = self.get_table_headers().index("CPU")
         row = self.page.locator("tbody tr", has_text="Chrome")
         cpu_value = row.locator("td").nth(cpu_index).text_content()
-        return float(re.search(r"\d+(?:\.\d+)?", cpu_value.strip()).group())
+        return float(re.search(r"\d+(?:\.\d+)?", cpu_value).group())
 
 
 
