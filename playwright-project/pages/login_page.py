@@ -34,15 +34,15 @@ class LoginPage(BasePage):
         """Verify successful login."""
         return self.page.get_by_role("link", name="Logout").is_visible(timeout=0)
 
-    def assert_logged_in(self) -> None:
+    def verify_logged_in(self) -> None:
         """Assert successful login."""
         expect(self.page.locator("b")).to_contain_text("You logged into a secure area!")
 
-    def assert_invalid_user_name(self)-> None:
+    def verify_invalid_user_name(self)-> None:
         """Assert Invalid User name entered."""
         expect(self.page.locator("#flash")).to_contain_text("Your username is invalid!")
 
-    def assert_invalid_password(self) -> None:
+    def verify_invalid_password(self) -> None:
         """Assert Invalid User name entered."""
         expect(self.page.locator("#flash")).to_contain_text("Your password is invalid!")
 

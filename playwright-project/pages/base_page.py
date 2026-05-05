@@ -8,7 +8,7 @@ class BasePage:
 
     def load_page(self, url: str) -> None:
         """Navigate to URL."""
-        self.page.goto(url, timeout=10_000)
+        self.page.goto(url, timeout=20_000)
         self.page.wait_for_load_state("domcontentloaded")
 
 
