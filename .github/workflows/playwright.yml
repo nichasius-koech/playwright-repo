@@ -20,10 +20,17 @@ jobs:
         pip install -r requirements.txt
     - name: Ensure browsers are installed
       run: python -m playwright install --with-deps
-    - name: Run your tests
-      run: pytest --tracing=retain-on-failure
-    - uses: actions/upload-artifact@v4
-      if: ${{ !cancelled() }}
+    - name: Run tests
+      run: |
+        mkdir -p test-results
+        pytest --tracing=retain-on-failure --junitxml=test-results/results.xml
+    - name: Upload test artifacts
+      if: always()
+      uses: actions/upload-artifact@v3
       with:
-        name: playwright-traces
+        name: test-results
         path: test-results/
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-traces
+          path: test-results/
