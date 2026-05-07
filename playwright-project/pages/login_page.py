@@ -18,14 +18,6 @@ class LoginPage(BasePage):
         self.page.get_by_role("link", name="Login Test Cases").click()
         self.page.get_by_role("link", name="page").click()
 
-    def enter_user_name(self, user_name:str) -> None:
-        """Enter the User Login  Name."""
-        self.page.get_by_role("textbox", name="Username").fill(user_name)
-
-    def enter_password(self, password:str)-> None:
-        """Enter the User Login Password."""
-        self.page.get_by_role("textbox", name="Password").fill(password)
-
     def tap_login_btn(self)-> None:
         """Press Login Button"""
         self.page.get_by_role("button", name="Login").click()
