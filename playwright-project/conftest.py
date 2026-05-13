@@ -7,7 +7,7 @@ from pages.register_page import RegisterPage
 from utils.comfig import LOGIN_URL, DYN_TABLE_URL, REGISTER_URL
 
 @pytest.fixture
-def login(page: Page):
+def login_page(page: Page):
     """Navigate to Login page Url."""
     login_page = LoginPage(page)
     login_page.load_page(LOGIN_URL)

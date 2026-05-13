@@ -15,11 +15,11 @@ class RegisterPage(BasePage):
         """Press Register Button"""
         self.page.get_by_role("button", name="Register").click()
 
-    def register_user(self,user_name,password,password_confirm)-> None:
+    def register_user(self, username, password, password_confirm)-> None:
         """Register new User."""
-        self.enter_user_name(user_name)
-        self.enter_password(password)
-        self.confirm_password(password_confirm)
+        self.enter_user_name(user_name=username)
+        self.enter_password(password=password)
+        self.confirm_password(password=password_confirm)
         self.tap_register_btn()
 
     def registration_success(self)-> None:

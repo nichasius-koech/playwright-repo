@@ -22,6 +22,12 @@ class LoginPage(BasePage):
         """Press Login Button"""
         self.page.get_by_role("button", name="Login").click()
 
+    def user_login(self, username,password)-> None:
+        """Login User,"""
+        self.enter_user_name(user_name=username)
+        self.enter_password(password=password)
+        self.tap_login_btn()
+
     def is_logged_in(self) -> bool:
         """Verify successful login."""
         return self.page.get_by_role("link", name="Logout").is_visible(timeout=0)
