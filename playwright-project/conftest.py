@@ -4,14 +4,13 @@ from playwright.sync_api import Page
 from pages.login_page import LoginPage
 from pages.dynamic_table import DynamicTable
 from pages.register_page import RegisterPage
-
-BASE_URL = "https://practice.expandtesting.com"
+from utils.comfig import LOGIN_URL, DYN_TABLE_URL, REGISTER_URL
 
 @pytest.fixture
 def login(page: Page):
     """Navigate to Login page Url."""
     login_page = LoginPage(page)
-    login_page.load_page(f"{BASE_URL}/login")
+    login_page.load_page(LOGIN_URL)
     yield login_page
     page.close()
 
@@ -19,14 +18,15 @@ def login(page: Page):
 def dyn_table(page: Page):
     """Navigate to Url containing a dynamic table."""
     dynamic_table = DynamicTable(page)
-    dynamic_table.load_page(f"{BASE_URL}/dynamic-table")
+    dynamic_table.load_page(DYN_TABLE_URL)
+    page.screenshot(path="example.png")
     yield dynamic_table
 
 @pytest.fixture
-def register(page: Page):
+def register_page(page: Page):
     """Navigate to Register page Url."""
     register_page = RegisterPage(page)
-    register_page.load_page(f"{BASE_URL}/register")
+    register_page.load_page(REGISTER_URL)
     yield register_page
 
 @pytest.fixture

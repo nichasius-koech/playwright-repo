@@ -1,30 +1,28 @@
+import pytest
+
 class TestUserRegistration:
-    """Login TestSuite."""
-    def test_valid_credentials(self, register, user_name):
-        """Test Registration with valid credentials."""
-        register.enter_user_name(user_name)
-        register.enter_password("Dest1nation+")
-        register.confirm_password("Dest1nation+")
-        register.tap_register_btn()
-        register.registration_success()
-        assert register.is_login_page(), "Registration Failed !!"
+    """User Registration TestSuite."""
 
-    def test_invalid_password(self, register):
-        """Test Registration with invalid password.
-        Only Alphabetical letters without numbers or special characters."""
-        register.enter_user_name("Practice4")
-        register.enter_password("SuperSecretPassword")
-        register.confirm_password("SuperSecretPassword")
-        register.tap_register_btn()
-        register.failed_registration()
-        assert register.is_register_page(), "Registration Succeeded !!"
+    @pytest.mark.parametrize(
+        "password,confirm_password,expected",
+        [pytest.param("Dest1nation+", "Dest1nation+", "success",
+                         id="Valid Registration Details"),
+         pytest.param("", "SuperSecretPassword", "missing_field",
+                         id="Missing password field"),
+         pytest.param("SuperSecretPasswoh+", "SuperSecretPasswor!", "mismatch",
+                         id="Password Mismatch")])
+    def test_user_registration(self, register_page, user_name, password, confirm_password, expected):
+        """Test User Registration."""
+        register_page.register_user(user_name, password, confirm_password)
 
+        if expected == "success":
+            register_page.registration_success()
+            assert register_page.is_login_page(), "Registration Failed !!"
 
-    def test_password_mismatch(self, register, user_name):
-        """Test Registration with confirmation password mismatch."""
-        register.enter_user_name(user_name)
-        register.enter_password("Dest1nation+")
-        register.confirm_password("Dest1nation!")
-        register.tap_register_btn()
-        register.password_mismatch()
-        assert register.is_register_page(), "Registration Succeeded !!"
+        elif expected == "missing_field":
+            register_page.missing_field()
+            assert register_page.is_register_page(), "Registration Succeeded !!"
+
+        elif expected == "mismatch":
+            register_page.password_mismatch()
+            assert register_page.is_register_page(), "Registration Succeeded !!"
