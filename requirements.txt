@@ -1,5 +1,6 @@
 pytest
 pytest-html
+pytest-xdist
 pytest-playwright
 playwright
 Faker

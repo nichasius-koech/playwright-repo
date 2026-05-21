@@ -46,6 +46,9 @@ jobs:
             --html=test-results/report.html \
             --self-contained-html
 
+      - name: Verify pytest plugins
+        run: pytest --help
+
       # ✅ Upload all reports (HTML + XML + traces)
       - name: Upload test artifacts
         if: ${{ always() }}
