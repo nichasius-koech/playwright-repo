@@ -1,4 +1,4 @@
-class TestLogin:
+class TestDynamicTable:
     """Dynamic Table TestSuite."""
     def test_headers(self, dyn_table):
         """Verify Table Headers are as expected."""
