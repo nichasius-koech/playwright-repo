@@ -40,7 +40,7 @@ jobs:
       - name: Run tests (parallel)
         run: |
           mkdir -p test-results
-          pytest -n auto --dist=loadscope \
+          pytest playwright-project/tests/ -n auto --dist=loadscope \
             --tracing=retain-on-failure \
             --junitxml=test-results/results.xml \
             --html=test-results/report.html \
