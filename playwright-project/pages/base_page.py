@@ -11,6 +11,10 @@ class BasePage:
         self.page.goto(url, timeout=20_000)
         self.page.wait_for_load_state("domcontentloaded")
 
+    def save_screenshot(self, screenshot_path, screenshot_name):
+        """Save screenshot."""
+        self.page.screenshot(path=f"{screenshot_path}/{screenshot_name}.png")
+
     def enter_user_name(self, user_name:str) -> None:
         """Enter the User Login  Name."""
         self.page.get_by_role("textbox", name="Username").fill(user_name)
