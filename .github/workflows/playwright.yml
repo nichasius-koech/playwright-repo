@@ -2,9 +2,9 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   test:
@@ -14,23 +14,47 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
+      # ✅ Faster builds with pip caching
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
           python-version: '3.13'
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Ensure browsers are installed
+
+      # ✅ Cache Playwright browsers (huge speed boost)
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
+
+      - name: Install Playwright browsers
         run: python -m playwright install --with-deps
 
-      - name: Run tests
+      # ✅ Parallel execution (major improvement 🚀)
+      - name: Run tests (parallel)
         run: |
           mkdir -p test-results
-          pytest tests/ --tracing=retain-on-failure --junitxml=test-results/results.xml
+          pytest tests/ -n auto --dist=loadscope \
+            --tracing=retain-on-failure \
+            --junitxml=test-results/results.xml \
+            --html=test-results/report.html \
+            --self-contained-html
 
+      # ✅ Upload all reports (HTML + XML + traces)
+      - name: Upload test artifacts
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-artifacts
+          path: test-results/
+
+      # ✅ Upload traces separately (clean separation)
       - name: Upload Playwright traces
         if: ${{ always() && !cancelled() }}
         uses: actions/upload-artifact@v4
@@ -38,6 +62,7 @@ jobs:
           name: playwright-traces
           path: test-results/**/*.zip
 
+      # ✅ Show results directly in GitHub UI
       - name: Publish Test Results
         if: ${{ always() }}
         uses: EnricoMi/publish-unit-test-result-action@v2
