@@ -29,7 +29,7 @@ jobs:
       - name: Run tests
         run: |
           mkdir -p test-results
-          pytest --tracing=retain-on-failure --junitxml=test-results/results.xml
+          pytest tests/ --tracing=retain-on-failure --junitxml=test-results/results.xml
 
       - name: Upload Playwright traces
         if: ${{ always() && !cancelled() }}
