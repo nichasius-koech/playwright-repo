@@ -2,9 +2,9 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [main, master]
   pull_request:
-    branches: [ main, master ]
+    branches: [main, master]
 
 jobs:
   test:
@@ -24,25 +24,35 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Ensure browsers are installed
+      - name: Install Playwright browsers
         run: python -m playwright install --with-deps
 
       - name: Run tests
         run: |
           mkdir -p test-results
-          pytest --tracing=retain-on-failure --junitxml=test-results/results.xml
+          pytest \
+            --tracing=retain-on-failure \
+            --junitxml=test-results/results.xml \
+            --html=test-results/report.html \
+            --self-contained-html
+
+      - name: Upload reports
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: test-results/
 
       - name: Upload Playwright traces
         if: ${{ always() && !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
           name: playwright-traces
-          path: test-results/results.
+          path: test-results/**/*.zip
 
       - name: Publish Test Results
-        if: always()
+        if: ${{ always() }}
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           files: |
             test-results/**/*.xml
-
