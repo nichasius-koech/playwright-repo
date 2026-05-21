@@ -41,6 +41,7 @@ jobs:
         run: |
           mkdir -p test-results
           pytest playwright-project/tests/ -n auto --dist=loadscope \
+            --browser chromium \
             --tracing=retain-on-failure \
             --junitxml=test-results/results.xml \
             --html=test-results/report.html \
