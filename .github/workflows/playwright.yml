@@ -39,12 +39,12 @@ jobs:
       # Parallel execution
       - name: Run tests (parallel)
         run: |
-          mkdir -p test-results
+          mkdir -p results
           pytest tests/ -n auto --dist=loadscope \
             --browser chromium \
             --tracing=retain-on-failure \
-            --junitxml=test-results/results.xml \
-            --html=test-results/report.html \
+            --junitxml=results/test-results.xml \
+            --html=results/report.html \
             --self-contained-html
 
       - name: Verify pytest plugins
@@ -56,7 +56,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test-artifacts
-          path: test-results/
+          path: results/
 
       # Upload traces separately
       - name: Upload Playwright traces
@@ -64,7 +64,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-traces
-          path: test-results/**/*.zip
+          path: results/**/*.zip
 
       # Show results directly in GitHub UI
       - name: Publish Test Results
