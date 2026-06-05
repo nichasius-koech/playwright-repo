@@ -1,14 +1,26 @@
 from playwright.sync_api import Page, expect
 from .base_page import BasePage
+from utils.logger import get_logger
+
+logger = get_logger(__name__)
 
 class LoginPage(BasePage):
     """Page Object for Login functionality."""
     def __init__(self, page: Page):
         self.page: Page = page
         super().__init__(self.page)
+        logger.debug("Login initialized")
+
+    def user_login(self, username,password)-> None:
+        """Login User,"""
+        logger.debug("Login User with given credentials.")
+        self.enter_username(username=username)
+        self.enter_password(password=password)
+        self.tap_login_btn()
 
     def navigate_to_login_page(self) -> None:
         """Navigate to Login Page."""
+        logger.info("Navigating to Login Page.")
         self.page.locator("#home-header").get_by_role("link", name="Test Cases").click()
 
         iframe_close_button = self.page.frame_locator('iframe[name="aswift_9"]').get_by_role("button", name="Close ad")
@@ -20,13 +32,8 @@ class LoginPage(BasePage):
 
     def tap_login_btn(self)-> None:
         """Press Login Button"""
+        logger.info("Tap login button.")
         self.page.get_by_role("button", name="Login").click()
-
-    def user_login(self, username,password)-> None:
-        """Login User,"""
-        self.enter_user_name(user_name=username)
-        self.enter_password(password=password)
-        self.tap_login_btn()
 
     def is_logged_in(self) -> bool:
         """Verify successful login."""

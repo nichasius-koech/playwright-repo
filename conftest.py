@@ -1,15 +1,17 @@
 import random
 import pytest
+import base64
+from pathlib import Path
+from pytest_html import extras
 from playwright.sync_api import Page
 from pages.login_page import LoginPage
 from pages.dynamic_table import DynamicTable
 from pages.register_page import RegisterPage
-from utils.config import LOGIN_URL, DYN_TABLE_URL, REGISTER_URL, TEST_RESULTS
+from utils.config import LOGIN_URL, DYN_TABLE_URL, REGISTER_URL
+from utils.logger import get_logger
 
+logger = get_logger(__name__)
 
-import pytest
-import base64
-from pytest_html import extras
 
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
@@ -21,7 +23,10 @@ def pytest_runtest_makereport(item, call):
         page = item.funcargs.get("page")
 
         if page:
-            screenshot_bytes = page.screenshot()
+            screenshot_path = Path("screenshots")
+            screenshot_path.mkdir(exist_ok=True)
+            file_name = screenshot_path / f"{item.name}.png"
+            screenshot_bytes = page.screenshot(path=str(file_name))
             screenshot_b64 = base64.b64encode(screenshot_bytes).decode()
 
             #Custom HTML block
@@ -37,11 +42,13 @@ def pytest_runtest_makereport(item, call):
 
             rep.extras = getattr(rep, "extras", [])
             rep.extras.append(extras.html(html))
+            logger.error(f"Screenshot saved: {file_name}")
 
 
 @pytest.fixture
 def login_page(request, page: Page):
     """Navigate to Login page Url."""
+    logger.info("Navigating to Login page")
     login_page = LoginPage(page)
     login_page.load_page(LOGIN_URL)
     yield login_page
@@ -49,6 +56,7 @@ def login_page(request, page: Page):
 @pytest.fixture
 def dyn_table(page: Page):
     """Navigate to Url containing a dynamic table."""
+    logger.info("Navigating to Dynamic Table page")
     dynamic_table = DynamicTable(page)
     dynamic_table.load_page(DYN_TABLE_URL)
     yield dynamic_table
@@ -56,6 +64,7 @@ def dyn_table(page: Page):
 @pytest.fixture
 def register_page(page: Page):
     """Navigate to Register page Url."""
+    logger.info("Navigating to Registration page")
     register_page = RegisterPage(page)
     register_page.load_page(REGISTER_URL)
     yield register_page
@@ -63,6 +72,7 @@ def register_page(page: Page):
 @pytest.fixture
 def user_name():
     """Generate a random username."""
+    logger.info("Generating a Username.")
     from faker import Faker
     full_name = Faker()
     rand_num=random.randint(1,10)

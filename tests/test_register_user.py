@@ -1,5 +1,7 @@
 import pytest
+from utils.logger import get_logger
 
+logger = get_logger(__name__)
 
 @pytest.mark.parametrize(
     "password,confirm_password,expected",
@@ -11,6 +13,7 @@ import pytest
                       id="Password mismatch")])
 def test_user_registration(register_page, user_name, password, confirm_password, expected):
     """Verify registration behavior with valid and invalid inputs."""
+    logger.debug("Verify registration behavior with valid and invalid inputs.")
 
     register_page.register_user(user_name, password, confirm_password)
     assert_registration_result(register_page, user_name, expected)
