@@ -14,11 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
 
-      # Faster builds with pip caching
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
-          python-version: '3.13'
+          python-version: '3.11'
           cache: 'pip'
 
       - name: Install dependencies
@@ -26,7 +25,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # Cache Playwright browsers
       - name: Cache Playwright browsers
         uses: actions/cache@v4
         with:
@@ -36,40 +34,27 @@ jobs:
       - name: Install Playwright browsers
         run: python -m playwright install --with-deps
 
-      # Parallel execution
-      - name: Run tests (parallel)
+      - name: Run tests
         run: |
           mkdir -p results
           pytest tests/ -n auto --dist=loadscope \
+            --maxfail=5 \
             --browser chromium \
             --tracing=retain-on-failure \
             --junitxml=results/test-results.xml \
             --html=results/report.html \
             --self-contained-html
 
-      - name: Verify pytest plugins
-        run: pytest --help
-
-      # Upload all reports (HTML + XML + traces)
       - name: Upload test artifacts
-        if: ${{ always() }}
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: test-artifacts
           path: results/
 
-      # Upload traces separately
-      - name: Upload Playwright traces
-        if: ${{ always() && !cancelled() }}
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-traces
-          path: results/**/*.zip
-
-      # Show results directly in GitHub UI
       - name: Publish Test Results
-        if: ${{ always() }}
+        if: always()
         uses: EnricoMi/publish-unit-test-result-action@v2
         with:
           files: |
-            test-results/**/*.xml
+            results/**/*.xml
