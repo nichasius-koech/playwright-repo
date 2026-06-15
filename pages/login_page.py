@@ -11,16 +11,21 @@ class LoginPage(BasePage):
         super().__init__(self.page)
         logger.debug("Login initialized")
 
-    def user_login(self, username,password)-> None:
+    def is_login_url(self) -> None:
+        """Verify Login Page Url is active."""
+        expect(self.page).to_have_url("https://practice.expandtesting.com/login")
+
+    def enter_login_credentials(self, username, password)-> None:
         """Login User,"""
         logger.debug("Login User with given credentials.")
         self.enter_username(username=username)
         self.enter_password(password=password)
-        self.tap_login_btn()
 
     def navigate_to_login_page(self) -> None:
         """Navigate to Login Page."""
         logger.info("Navigating to Login Page.")
+        if self.is_login_page():
+            return
         self.page.locator("#home-header").get_by_role("link", name="Test Cases").click()
 
         iframe_close_button = self.page.frame_locator('iframe[name="aswift_9"]').get_by_role("button", name="Close ad")
@@ -37,17 +42,21 @@ class LoginPage(BasePage):
 
     def is_logged_in(self) -> bool:
         """Verify successful login."""
+        # expect(self.page).to_have_url("htpts://practice.expandtesting.com/secure")
         return self.page.get_by_role("link", name="Logout").is_visible(timeout=0)
 
     def verify_logged_in(self) -> None:
-        """Assert successful login."""
+        """Verify successful login."""
+        logger.info("Verify successful login")
         expect(self.page.locator("b")).to_contain_text("You logged into a secure area!")
 
     def verify_invalid_user_name(self)-> None:
         """Assert Invalid User name entered."""
+        logger.debug("Assert Invalid User name entered")
         expect(self.page.locator("#flash")).to_contain_text("Your username is invalid!")
 
     def verify_invalid_password(self) -> None:
         """Assert Invalid User name entered."""
+        logger.debug("Assert Invalid User name entered")
         expect(self.page.locator("#flash")).to_contain_text("Your password is invalid!")
 

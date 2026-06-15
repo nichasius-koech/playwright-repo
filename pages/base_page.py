@@ -1,5 +1,5 @@
 from pathlib import Path
-from playwright.sync_api import Page
+from playwright.sync_api import Page, expect, Locator
 from utils.logger import get_logger
 
 logger = get_logger(__name__)
@@ -12,11 +12,11 @@ class BasePage:
         logger.debug("BasePage initialized")
 
     @property
-    def username_input(self):
+    def username_input(self) -> Locator:
         return self.page.get_by_role("textbox", name="Username")
 
     @property
-    def password_field(self):
+    def password_field(self) -> Locator:
         return self.page.get_by_role("textbox", name="Password", exact=True)
 
     def load_page(self, url: str) -> None:

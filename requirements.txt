@@ -1,5 +1,7 @@
 pytest
 pytest-html
+gherkin-official
+pytest-bdd
 pytest-xdist
 pytest-playwright
 playwright

@@ -70,7 +70,7 @@ def register_page(page: Page):
     yield register_page
 
 @pytest.fixture
-def user_name():
+def username():
     """Generate a random username."""
     logger.info("Generating a Username.")
     from faker import Faker

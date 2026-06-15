@@ -11,8 +11,12 @@ logger = get_logger(__name__)
      pytest.param("Practice", "WrongPassword", "wrong_password", id="Wrong password")])
 def test_user_login(login_page, username, password, expected):
     """Verify login behavior for valid and invalid credentials."""
-    logger.debug("Verify login behavior for valid and invalid credentials.")
-    login_page.user_login(username, password)
+    logger.debug(f"Verify login behavior for : "
+                 f"\n Username: {username},"
+                 f"\n Password: {password},"
+                 f"\n Expected: {expected}.")
+    login_page.enter_login_credentials(username, password)
+    login_page.tap_login_btn()
     assert_login_result(login_page, username, expected)
 
 

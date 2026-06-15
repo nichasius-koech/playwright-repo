@@ -11,12 +11,14 @@ logger = get_logger(__name__)
                       id="Missing password"),
      pytest.param( "SuperSecretPasswoh+", "SuperSecretPasswor!", "mismatch",
                       id="Password mismatch")])
-def test_user_registration(register_page, user_name, password, confirm_password, expected):
+def test_user_registration(register_page, username, password, confirm_password, expected):
     """Verify registration behavior with valid and invalid inputs."""
-    logger.debug("Verify registration behavior with valid and invalid inputs.")
-
-    register_page.register_user(user_name, password, confirm_password)
-    assert_registration_result(register_page, user_name, expected)
+    logger.debug(f"Verify registration behavior for : "
+                 f"\n Username: {username},"
+                 f"\n Password: {password},"
+                 f"\n Expected: {expected}.")
+    register_page.register_user(username, password, confirm_password)
+    assert_registration_result(register_page, username, expected)
 
 
 def assert_registration_result(register_page, user_name, expected):
