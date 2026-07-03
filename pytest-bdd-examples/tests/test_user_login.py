@@ -9,6 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent
 FEATURE_FILE=BASE_DIR.joinpath(feature_file_dir).joinpath().joinpath(feature_file)
 scenarios(FEATURE_FILE)
 
+
 @given("User navigates to Login Url")
 def login_page_is_open(login_page):
     logger.info("Navigating to Login Page.")

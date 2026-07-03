@@ -15,6 +15,13 @@ from utils.logger import get_logger
 logger = get_logger(__name__)
 
 
+def pytest_bdd_before_scenario(feature, scenario):
+    """Log the feature and scenario names before scenario execution."""
+    logger.info("=" * 80)
+    logger.info(f"Feature : {feature.name}")
+    logger.info(f"Scenario: {scenario.name}")
+    logger.info("=" * 80)
+
 @pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item, call):
     outcome = yield
