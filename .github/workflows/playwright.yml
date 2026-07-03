@@ -37,7 +37,7 @@ jobs:
       - name: Run tests
         run: |
           mkdir -p results
-          pytest tests/ -n auto --dist=loadscope \
+          pytest tests/ pytest-bdd-examples/tests -n auto --dist=loadscope \
             --maxfail=5 \
             --browser chromium \
             --tracing=retain-on-failure \

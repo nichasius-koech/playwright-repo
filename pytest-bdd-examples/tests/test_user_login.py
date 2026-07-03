@@ -1,5 +1,4 @@
 """This module demonstrates pytest BDD example."""
-
 from pathlib import Path
 from pytest_bdd import scenarios, given, then, when
 from conftest import logger
@@ -19,7 +18,7 @@ def login_page_is_open(login_page):
 @given("Login widgets are displayed")
 def login_widgets_are_displayed(login_page):
     logger.info("Verify Login Url is displayed.")
-    login_page.is_login_url()
+    login_page.is_login_url(), "Login page not loaded !"
 
 @given("User enters correct user name and Password")
 def enter_correct_credentials(login_page):

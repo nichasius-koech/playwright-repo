@@ -15,7 +15,7 @@ class DragDropPage(BasePage):
         self.target = page.locator("#column-b")
 
     @staticmethod
-    def is_element_visible(elem: Locator):
+    def is_element_visible(elem: Locator)-> bool:
         """Verify element is visible."""
         return elem.is_visible()
 

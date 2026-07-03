@@ -6,3 +6,4 @@ REGISTER_URL=f"{BASE_URL}/register"
 DYN_TABLE_URL = f"{BASE_URL}/dynamic-table"
 DRAG_DROP_URL = f"{BASE_URL}/drag-and-drop"
 TEST_RESULTS = "./test-results/"
+
