@@ -19,15 +19,18 @@ logger = get_logger(__name__)
 load_dotenv()
 
 
-def load_test_data():
-    with open("config/users.yaml", encoding="utf-8") as file:
+def load_yaml(filename: str) -> dict:
+    """Load yaml test data."""
+    file_path = Path(__file__).parent / "config" / filename
+
+    with file_path.open(encoding="utf-8") as file:
         return yaml.safe_load(file)
 
 
-def pytest_generate_tests(metafunc):
+def generate_login_tests(metafunc):
     if {"login_page", "username", "password", "expected"} <= set(metafunc.fixturenames):
 
-        data = load_test_data()
+        data = load_yaml("login_tests.yaml")
 
         test_cases = []
         ids = []
@@ -44,6 +47,9 @@ def pytest_generate_tests(metafunc):
 
         metafunc.parametrize(("username", "password", "expected"), test_cases,ids=ids,)
 
+def pytest_generate_tests(metafunc):
+    """Central test generator hook."""
+    generate_login_tests(metafunc)
 
 def pytest_bdd_before_scenario(feature, scenario):
     """Log the feature and scenario names before scenario execution."""
