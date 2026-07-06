@@ -25,7 +25,7 @@ def load_test_data():
 
 
 def pytest_generate_tests(metafunc):
-    if {"username", "password", "expected"} <= set(metafunc.fixturenames):
+    if {"login_page", "username", "password", "expected"} <= set(metafunc.fixturenames):
 
         data = load_test_data()
 
