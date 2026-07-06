@@ -1,0 +1,15 @@
+login_tests:
+  - id: valid_credentials
+    username: Practice
+    password_env: VALID_PASSWORD
+    expected: success
+
+  - id: invalid_user_name
+    username: InvalidName
+    password_env: VALID_PASSWORD
+    expected: wrong_user
+
+  - id: wrong_password
+    username: Practice
+    password_env: INVALID_PASSWORD
+    expected: wrong_password

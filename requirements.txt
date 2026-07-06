@@ -6,3 +6,5 @@ pytest-xdist
 pytest-playwright
 playwright
 Faker
+python-dotenv
+pyyaml

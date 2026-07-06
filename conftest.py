@@ -1,18 +1,48 @@
+import os
 import random
 import pytest
 import base64
+import yaml
 from pathlib import Path
 from pytest_html import extras
 from playwright.sync_api import Page
-
 from pages.drag_and_drop import DragDropPage
 from pages.login_page import LoginPage
 from pages.dynamic_table import DynamicTable
 from pages.register_page import RegisterPage
 from utils.config import LOGIN_URL, DYN_TABLE_URL, REGISTER_URL, DRAG_DROP_URL
 from utils.logger import get_logger
+from dotenv import load_dotenv
 
 logger = get_logger(__name__)
+
+load_dotenv()
+
+
+def load_test_data():
+    with open("config/users.yaml", encoding="utf-8") as file:
+        return yaml.safe_load(file)
+
+
+def pytest_generate_tests(metafunc):
+    # if {"username", "password", "expected"} <= set(metafunc.fixturenames):
+
+    data = load_test_data()
+
+    test_cases = []
+    ids = []
+
+    for case in data["login_tests"]:
+        password = os.getenv(case["password_env"])
+
+        test_cases.append(
+            (case["username"],
+             password,
+             case["expected"],))
+
+        ids.append(case["id"])
+
+    metafunc.parametrize(("username", "password", "expected"), test_cases,ids=ids,)
 
 
 def pytest_bdd_before_scenario(feature, scenario):
