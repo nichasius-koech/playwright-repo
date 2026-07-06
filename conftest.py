@@ -25,24 +25,24 @@ def load_test_data():
 
 
 def pytest_generate_tests(metafunc):
-    # if {"username", "password", "expected"} <= set(metafunc.fixturenames):
+    if {"username", "password", "expected"} <= set(metafunc.fixturenames):
 
-    data = load_test_data()
+        data = load_test_data()
 
-    test_cases = []
-    ids = []
+        test_cases = []
+        ids = []
 
-    for case in data["login_tests"]:
-        password = os.getenv(case["password_env"])
+        for case in data["login_tests"]:
+            password = os.getenv(case["password_env"])
 
-        test_cases.append(
-            (case["username"],
-             password,
-             case["expected"],))
+            test_cases.append(
+                (case["username"],
+                 password,
+                 case["expected"],))
 
-        ids.append(case["id"])
+            ids.append(case["id"])
 
-    metafunc.parametrize(("username", "password", "expected"), test_cases,ids=ids,)
+        metafunc.parametrize(("username", "password", "expected"), test_cases,ids=ids,)
 
 
 def pytest_bdd_before_scenario(feature, scenario):
