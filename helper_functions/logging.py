@@ -16,3 +16,6 @@ def log_info(description: str):
 
 def log_debug(description: str):
     logger.debug(description)
+
+def log_error(description: str):
+    logger.error(description)
