@@ -1,8 +1,7 @@
 """This module demonstrates pytest BDD example."""
 from pathlib import Path
 from pytest_bdd import scenarios, given, then, when
-from conftest import logger
-from helper_functions.logging import log_step, log_pass
+from helper_functions.logging import log_step, log_debug
 
 feature_file_dir= "../features"
 feature_file="login.feature"
@@ -35,24 +34,24 @@ def click_login_button(login_page):
 
 @then("User is successfully logged in")
 def verify_user_logged_in(login_page):
-    log_step(5,"Verify User is successfully logged in.")
+    log_debug("Verify User is successfully logged in.")
     login_page.verify_logged_in()
     assert login_page.is_logged_in(), f"User should be logged in."
 
 # Invalid Password Usecase
 @given("User enters valid user name and wrong Password")
 def enter_correct_credentials(login_page):
-    logger.info("User enters valid user name and wrong Password.")
+    log_step(1, "User enters valid user name and wrong Password.")
     login_page.enter_login_credentials("practice", "151212165!")
 
 @when("User clicks on Login button")
 def click_login_button(login_page):
     """Click the Login button"""
-    logger.info("Click the Login button.")
+    log_step(2, "Click the Login button.")
     login_page.tap_login_btn()
 
 @then("User is not logged in")
 def verify_user_logged_in(login_page):
-    logger.info("Verify User is successfully logged in.")
+    log_debug("Verify User is successfully logged in.")
     login_page.verify_invalid_password()
     assert not login_page.is_logged_in(), f"User should be logged in."
