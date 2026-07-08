@@ -1,10 +1,9 @@
 import pytest
 
 from data.registration_test_data import RegisterResult
+from helper_functions.logging import log_debug
 from tests.assertions.registration_assertions import assert_registration_result
-from utils.logger import get_logger
 
-logger = get_logger(__name__)
 
 @pytest.mark.parametrize(
     "password,confirm_password,expected",
@@ -23,7 +22,7 @@ logger = get_logger(__name__)
      ])
 def test_user_registration(register_page, username, password, confirm_password, expected):
     """Verify registration behavior with valid and invalid inputs."""
-    logger.debug(f"Verify registration behavior for : "
+    log_debug(f"Verify registration behavior for : "
                  f"\n Username: {username},"
                  f"\n Password: {password},"
                  f"\n Expected: {expected}.")

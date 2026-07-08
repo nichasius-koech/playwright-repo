@@ -1,17 +1,16 @@
-from utils.logger import get_logger
+from helper_functions.logging import log_debug
 
-logger = get_logger(__name__)
 
 class TestDynamicTable:
     """Dynamic Table TestSuite."""
 
     def test_headers(self, dyn_table):
         """Verify Table Headers are as expected."""
-        logger.debug("Verify Table Headers are as expected.")
+        log_debug("Verify Table Headers are as expected.")
         assert (sorted(dyn_table.get_table_headers()) ==
                 sorted(["Name","Memory","CPU","Disk","Network"]))
 
     def test_chrome_cpu_value(self, dyn_table):
         """Verify Chrome CPU Value is correct."""
-        logger.debug("Verify Chrome CPU Value is correct.")
+        log_debug("Verify Chrome CPU Value is correct.")
         assert dyn_table.get_table_chrome_cpu_val() == dyn_table.get_actual_chrome_cpu_val()
