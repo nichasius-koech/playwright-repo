@@ -1,0 +1,15 @@
+registration_tests:
+  - id: valid_credentials
+    password_env: VALID_PASSWORD
+    confirm_password: VALID_PASSWORD
+    expected: success
+
+  - id: missing_password
+    password_env: EMPTY_PASSWORD
+    confirm_password: VALID_PASSWORD
+    expected: missing_field
+
+  - id: password_mismatch
+    password_env: VALID_PASSWORD
+    confirm_password: INVALID_PASSWORD
+    expected: password_mismatch

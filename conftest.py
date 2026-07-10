@@ -20,11 +20,42 @@ load_dotenv()
 
 def load_yaml(filename: str) -> dict:
     """Load yaml test data."""
-    file_path = Path(__file__).parent / "config" / filename
+    file_path = Path(__file__).parent / "data" / filename
 
     with file_path.open(encoding="utf-8") as file:
         return yaml.safe_load(file)
 
+def user_name():
+    """Generate a random username."""
+    log_info("Generating a Username.")
+    from faker import Faker
+    full_name = Faker()
+    rand_num = random.randint(1, 10)
+    return f"{full_name.first_name()}{rand_num}"
+
+def generate_regisration_tests(metafunc):
+
+    if {"register_page", "username", "password","confirm_password",  "expected"} <= set(metafunc.fixturenames):
+
+        data = load_yaml("registration_tests.yaml")
+
+        test_cases = []
+        ids = []
+
+        for case in data["registration_tests"]:
+            password = os.getenv(case["password_env"])
+            confirm_password = os.getenv(case["confirm_password"])
+            username = user_name()
+
+            test_cases.append(
+                (username,
+                 password,
+                 confirm_password,
+                 case["expected"],))
+
+            ids.append(case["id"])
+
+        metafunc.parametrize(("username", "password", "confirm_password",  "expected"), test_cases,ids=ids,)
 
 def generate_login_tests(metafunc):
     if {"login_page", "username", "password", "expected"} <= set(metafunc.fixturenames):
@@ -49,6 +80,7 @@ def generate_login_tests(metafunc):
 def pytest_generate_tests(metafunc):
     """Central test generator hook."""
     generate_login_tests(metafunc)
+    generate_regisration_tests(metafunc)
 
 def pytest_bdd_before_scenario(feature, scenario):
     """Log the feature and scenario names before scenario execution."""
@@ -123,11 +155,11 @@ def register_page(page: Page):
     register_page.load_page(REGISTER_URL)
     yield register_page
 
-@pytest.fixture
-def username():
-    """Generate a random username."""
-    log_info("Generating a Username.")
-    from faker import Faker
-    full_name = Faker()
-    rand_num=random.randint(1,10)
-    yield f"{full_name.first_name()}{rand_num}"
+# @pytest.fixture
+# def username():
+#     """Generate a random username."""
+#     log_info("Generating a Username.")
+#     from faker import Faker
+#     full_name = Faker()
+#     rand_num=random.randint(1,10)
+#     yield f"{full_name.first_name()}{rand_num}"
