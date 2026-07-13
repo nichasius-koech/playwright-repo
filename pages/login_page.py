@@ -4,13 +4,18 @@ from utils.logger import get_logger
 
 logger = get_logger(__name__)
 
+
 class LoginPage(BasePage):
     """Page Object for Login functionality."""
     def __init__(self, page: Page):
         self.page: Page = page
         super().__init__(self.page)
         logger.debug("Login initialized")
-
+    
+    @property
+    def flash(self):
+        return "#flash"
+    
     def is_login_url(self) -> None:
         """Verify Login Page Url is active."""
         expect(self.page).to_have_url("https://practice.expandtesting.com/login")
@@ -48,15 +53,15 @@ class LoginPage(BasePage):
     def verify_logged_in(self) -> None:
         """Verify successful login."""
         logger.info("Verify successful login")
-        expect(self.page.locator("b")).to_contain_text("You logged into a secure area!")
+        expect(self.page.locator(self.flash)).to_contain_text("You logged into a secure area!")
 
     def verify_invalid_user_name(self)-> None:
         """Assert Invalid User name entered."""
         logger.debug("Assert Invalid User name entered")
-        expect(self.page.locator("#flash")).to_contain_text("Your username is invalid!")
+        expect(self.page.locator(self.flash)).to_contain_text("Your username is invalid!")
 
     def verify_invalid_password(self) -> None:
         """Assert Invalid User name entered."""
         logger.debug("Assert Invalid User name entered")
-        expect(self.page.locator("#flash")).to_contain_text("Your password is invalid!")
+        expect(self.page.locator(self.flash)).to_contain_text("Your password is invalid!")
 

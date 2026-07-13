@@ -11,6 +11,10 @@ class RegisterPage(BasePage):
         super().__init__(self.page)
         logger.debug("Registration initialized")
 
+    @property
+    def flash(self):
+        return "#flash"
+
     def confirm_password(self, password:str)-> None:
         """Confirm Password."""
         logger.info("Confirm User Password.")
@@ -32,20 +36,20 @@ class RegisterPage(BasePage):
     def registration_success(self)-> None:
         """Verify Register Success."""
         logger.debug("Confirm User Registration Successful.")
-        expect(self.page.locator("#flash")).to_contain_text("Successfully registered")
+        expect(self.page.locator(self.flash)).to_contain_text("Successfully registered")
 
     def failed_registration(self)-> None:
         """Verify Invalid Registration."""
         logger.info("Confirm User Registration Failed.")
-        expect(self.page.locator("#flash")).to_contain_text("An error occurred during registration")
+        expect(self.page.locator(self.flash)).to_contain_text("An error occurred during registration")
 
     def missing_field(self)-> None:
         """Verify Registration with missing field."""
         logger.info("Verify Missing Field alert.")
-        expect(self.page.locator("#flash")).to_contain_text("All fields are required")
+        expect(self.page.locator(self.flash)).to_contain_text("All fields are required")
 
     def password_mismatch(self)-> None:
         """Verify Password Mismatch."""
         logger.info("Verify Password mismatch.")
-        expect(self.page.locator("#flash")).to_contain_text("Passwords do not match")
+        expect(self.page.locator(self.flash)).to_contain_text("Passwords do not match")
 
